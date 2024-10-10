@@ -1,1 +1,28 @@
+name: Doing a test
 
+on:
+  push:
+    tags:
+      - "*.*.*"  # Matches tags like 1.0.0, 2.1.1, etc.
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]  # Build for Linux, macOS, and Windows
+        architecture: [x64, arm64, armv7]  # Target architectures
+        
+    steps:
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'  # Enables caching for pip dependencies
+
+      - name: Check platform
+        shell: bash
+        run: |
+          python -m platform
